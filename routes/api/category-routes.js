@@ -11,6 +11,9 @@ router.get("/", async (req, res) => {
     const categoryData = await Category.findAll({
       include: [{ model: Product }],
     });
+    if (!categoryData) {
+      return res.status(404).json({ message: "Category not found" });
+    }
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -28,7 +31,6 @@ router.get("/:id", async (req, res) => {
     if (!categoryData) {
       return res.status(404).json({ message: "Category not found" });
     }
-
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
@@ -44,6 +46,9 @@ router.post("/", async (req, res) => {
     const newCategory = await Category.create({
       category_name: req.body.category_name,
     });
+    if (!newCategory) {
+      return res.status(404).json({ message: "Category not found" });
+    }
     res.status(200).json(newCategory);
   } catch (err) {
     res.status(500).json(err);
@@ -72,7 +77,7 @@ router.put("/:id", async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    return res.json({ message: "Category updated successfully" });
+    return res.json(200)({ message: "Category updated successfully" });
   } catch (error) {
     console.error("Error updating category:", error);
     return res.status(500).json({ message: "Internal Server Error" });
