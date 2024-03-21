@@ -79,7 +79,7 @@ npm start
 
 Please refer to the following walkthrough video that demonstrates the functionality of the application and showcases all of the acceptance criteria being met:
 
-[Link to Walkthrough Video](https://www.loom.com/share/c93100ee000146cf831863f7cf900dac?sid=135988bc-f097-4bfe-a428-8d139496badd)
+[Link to Walkthrough Video](https://www.loom.com/share/bfa2e737684642b9adf0835e8c28501d?sid=dccd3cd8-6e1c-4137-910d-08a82d81acf3)
 
 ## Contributing
 
