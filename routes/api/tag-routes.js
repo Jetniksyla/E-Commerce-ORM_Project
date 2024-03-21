@@ -45,16 +45,30 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try {
-    const tagUpdate = await Tag.update(req.body, {
-      where: { id: req.params.id },
+    const updateTag = await Tag.update({
+      tag_name: req.body.tagName
+    },
+    {
+      where: {
+        id: req.params.id
+      }
     });
-    if (!tagUpdate) {
-      return res.status(404).json({ message: "Failed to create tag." });
-    }
-    res.status(200).json(tagUpdate);
+    
+     // checks if the Tag ID exists. If not - message pops up:
+    const tagId = await Tag.findByPk(req.params.id, {
+      include: [{ model: Product }]
+    });
+    if (!tagId) {
+      res.status(200).json({message: 'No tag found with this id!'});
+      return;
+    };
+
+    res.status(200).json(updateTag);
+    console.log('Success! Tag was updated!');
+    
   } catch (err) {
     res.status(500).json(err);
   }

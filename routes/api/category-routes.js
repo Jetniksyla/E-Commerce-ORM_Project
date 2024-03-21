@@ -56,15 +56,11 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  // Update a category by its `id` value
-
+  // updates a category by its `id` value
   try {
-    const categoryData = await Category.update(
+    const updatedCategory = await Category.update(
       {
-        product_name: req.body.product_name,
-        price: req.body.price,
-        stock: req.body.stock,
-        category_id: req.body.category_id,
+        category_name: req.body.category_name,
       },
       {
         where: {
@@ -72,17 +68,25 @@ router.put("/:id", async (req, res) => {
         },
       }
     );
+    // checks if the Category ID exists. If not - message pops up:
+    const categoryId = await Category.findByPk(req.params.id, {
+      include: [{ model: Product }],
+    });
 
-    if (!categoryData) {
-      return res.status(404).json({ message: "Category not found" });
+    if (!categoryId) {
+      res
+        .status(200)
+        .json({ message: "Did not find any Categories with this ID!" });
+      return;
     }
 
-    return res.json(200)({ message: "Category updated successfully" });
-  } catch (error) {
-    console.error("Error updating category:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    res.status(200).json(updatedCategory);
+    console.log("Success! Category was updated!");
+  } catch (err) {
+    res.status(500).json(err);
   }
 });
+
 
 router.delete("/:id", async (req, res) => {
   // delete a category by its `id` value
